@@ -16,7 +16,7 @@ function newConnection(socket) {
     console.log('new connection' + socket.id);
     socket.on('button', sendRequest);
     function sendRequest(data){
-        req.open('GET', data, false);
+        req.open('GET', data.url, false);
         req.send(null);
         if(req.status == 200) {
             io.sockets.emit('button', {text: req.responseText});
