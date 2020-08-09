@@ -1,16 +1,16 @@
-let socket = io.connect('http://localhnost:3000');
+let socket = io.connect('http://localhost:3000');
 
-socket.on('bullet', printData);
+socket.on('button', printData);
 
 function printData(data){
     console.log(data);
 }
 
-document.getElementById("Click").addEventListener("click", clickFunction)
+document.getElementById("click").onclick = clickFunction;
 
 function clickFunction(){
     let data = {
         url: document.getElementById("type").value
     }
-    socket.emit('bullet', data);
+    socket.emit('button', data);
 }
