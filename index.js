@@ -18,10 +18,11 @@ function newConnection(socket) {
     console.log('new connection' + socket.id);
     socket.on('button', sendRequest);
     function sendRequest(data){
+        console.log(data);
         req.open('GET', data.url, false);
         req.send(null);
         if(req.status == 200) {
-            io.sockets.emit('button', {text: req.responseText});
+            io.sockets.emit('button', {text: req.responseText, url: data.url});
         }
     }
 }
