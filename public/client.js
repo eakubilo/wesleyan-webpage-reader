@@ -75,7 +75,8 @@ let regexpThreeLetters = /[>][A-Z]{3}[0-9]{3}[-][0][1]/gi
 let regexpThreeLettersAmpersand = /[>][A-Z]{2}[&][A-Z][0-9]{3}[-][0][1]/gi
 let regexpThreeLettersAmpersandButStupid = /[>][A-Z][&][A-Z]{2}[0-9]{3}[-][0][1]/gi
 function printData(data){
-    let courses = [];
+    let springCourses = [];
+    let fallCourses = [];
     let doc = parser.parseFromString(data.text, 'text/html');
     let courseTag = doc.getElementsByClassName("header")[6].innerHTML;
     console.log(doc.getElementsByClassName("header")[6]);
@@ -84,6 +85,7 @@ function printData(data){
         courseTagVal += courseTag.charCodeAt(i);
     }
     // console.log(doc.getElementsByTagName("a"));
+    let currentAnchor = "fall";
     for(let anchor of doc.getElementsByTagName("a")){
         let anchorVal = 0;
         for(let i = 0; i < anchor.innerHTML.length; i++){
@@ -96,24 +98,17 @@ function printData(data){
             for(let i = 0; i < 10; i ++){
                 anchorArray=anchorArray.replace(`-0${i}`, '');
             }
-            if(courses.indexOf(anchorArray) == -1 && anchorArray != courseTag){
-                courses.push(anchorArray);
+            if(!(fallCourses.indexOf(anchorArray) != -1 || fallCourses.indexOf(anchorArray) != -1) && anchorArray != courseTag){
+                if(doc.getElementsByTagName("tbody")[2].contains(anchor)){
+                    fallCourses.push(anchorArray);
+                }else if(doc.getElementsByTagName("tbody")[4].contains(anchor)){
+                    springCourses.push(anchorArray);
+                }
             }
         }
     }
-    console.log(courses);
-    // str = data.text;
-    // let match, matches =[];
-    // console.log(data.url.substring(84,85));    
-    // while((match = regexp.exec(str)) != null || ((match = regexpThreeLetters.exec(str)) != null) || ((match = regexpThreeLettersAmpersand.exec(str)) != null) || ((match = regexpThreeLettersAmpersandButStupid.exec(str)) != null)){
-    //     console.log("found");
-    //     matches.push({
-    //         index: match.index,
-    //         content: str.substring((match.index+1), (match.index + 11))
-    //     });
-    //     str = str.replace(str.substring((match.index+1), (match.index + 11)))
-    // }
-    // console.log(matches);
+    console.log(fallCourses);
+    console.log(springCourses);
 }
 
 document.getElementById("click").onclick = clickFunction;
