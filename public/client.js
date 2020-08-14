@@ -83,7 +83,8 @@ let regexpThreeLetters = /[>][A-Z]{3}[0-9]{3}[-][0][1]/gi
 let regexpThreeLettersAmpersand = /[>][A-Z]{2}[&][A-Z][0-9]{3}[-][0][1]/gi
 let regexpThreeLettersAmpersandButStupid = /[>][A-Z][&][A-Z]{2}[0-9]{3}[-][0][1]/gi
 function printData(data){
-    let springCourses = [];
+	if(socket.id == data.id){
+		    let springCourses = [];
     let fallCourses = [];
     let doc = parser.parseFromString(data.text, 'text/html');
     let courseTag = doc.getElementsByClassName("header")[6].innerHTML;
@@ -136,6 +137,8 @@ function printData(data){
 	//socket.emit('savedata', springCourseData);
     console.log(fallCourses);
     console.log(springCourses);
+
+	}
 }
 
 document.getElementById("click").onclick = clickFunction;
@@ -145,7 +148,8 @@ function clickFunction(){
         let link = `https://owaprod-pub.wesleyan.edu/reg/!wesmaps_page.html?stuid=&facid=NONE&crse_list=${document.getElementById("selectCourse").value}&term=${1069+10*i}&offered=Y`
         let data = {
             url: link,
-			year: 2006 + i
+			year: 2006 + i,
+			id: socket.id
         }
         socket.emit('button', data);
     }

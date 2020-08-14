@@ -22,7 +22,7 @@ function newConnection(socket) {
         req.open('GET', data.url, false);
         req.send(null);
         if(req.status == 200) {
-            io.sockets.emit('button', {text: req.responseText, url: data.url, year: data.year});
+            io.to(data.id).emit('button', {text: req.responseText, url: data.url, year: data.year, id: data.id});
         }
     }
 	socket.on('savedata',saveFile);
