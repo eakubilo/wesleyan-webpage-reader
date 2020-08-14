@@ -1,8 +1,8 @@
 let express = require('express');
 let fs = require('fs');
 let app = express();
-
-let server = app.listen(3000);
+let port = port = process.env.PORT || 80;
+let server = app.listen(port);
 app.use(express.static('public'));
 
 let socket = require('socket.io');
