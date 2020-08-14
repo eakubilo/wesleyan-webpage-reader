@@ -1,5 +1,5 @@
 let express = require('express');
-
+let fs = require('fs');
 let app = express();
 
 let server = app.listen(3000);
@@ -22,7 +22,19 @@ function newConnection(socket) {
         req.open('GET', data.url, false);
         req.send(null);
         if(req.status == 200) {
-            io.sockets.emit('button', {text: req.responseText, url: data.url});
+            io.sockets.emit('button', {text: req.responseText, url: data.url, year: data.year});
         }
     }
+	socket.on('savedata',saveFile);
+	function saveFile(data){
+		console.log(data)
+		let coursesFormatted = `\n ${data.year} ${data.semester} courses: ${data.courses.toString()}`
+		fs.appendFile('courses.txt', coursesFormatted, function(err) {
+			if (err) {
+				console.log(`Error! Append failed`)
+			}else {
+				console.log(`Append successful`)
+			}
+		})
+	}
 }

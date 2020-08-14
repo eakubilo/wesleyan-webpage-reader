@@ -68,6 +68,14 @@ let courses = [
     "THEA",
     "WLIT"
   ]
+let select = document.getElementById("selectCourse");
+for(let i = 0; i < courses.length; i++){
+	let course = courses[i];
+	let el = document.createElement("option");
+	el.textContent = course;
+	el.value = course;
+	select.appendChild(el);
+}	
 let str;
 let parser = new DOMParser();
 let regexp = /[>][A-Z]{4}[0-9]{3}[-][0-1]{2}/gi
@@ -98,25 +106,46 @@ function printData(data){
             for(let i = 0; i < 10; i ++){
                 anchorArray=anchorArray.replace(`-0${i}`, '');
             }
-            if(!(fallCourses.indexOf(anchorArray) != -1 || fallCourses.indexOf(anchorArray) != -1) && anchorArray != courseTag){
+            if((fallCourses.indexOf(anchorArray) == -1) && anchorArray != courseTag){
                 if(doc.getElementsByTagName("tbody")[2].contains(anchor)){
                     fallCourses.push(anchorArray);
-                }else if(doc.getElementsByTagName("tbody")[4].contains(anchor)){
+                }
+			}
+			if((springCourses.indexOf(anchorArray) == -1) && anchorArray != courseTag){
+				if(doc.getElementsByTagName("tbody")[4].contains(anchor)){
                     springCourses.push(anchorArray);
                 }
             }
         }
     }
+	let fallCourseData={
+		courses: fallCourses,
+		semester: "fall",
+		year: data.year
+	}
+	let springCourseData = {
+		courses: springCourses,
+		semester: "spring",
+		year: (data.year + 1)
+	}
+	let fallCourseFormatted = `<br> ${fallCourseData.year} ${fallCourseData.semester} courses: ${fallCourseData.courses.toString()}`
+	let springCourseFormatted = `<br> ${springCourseData.year} ${springCourseData.semester} courses: ${springCourseData.courses.toString()}`
+	document.getElementById("courses").innerHTML = document.getElementById("courses").innerHTML + fallCourseFormatted;
+	document.getElementById("courses").innerHTML = document.getElementById("courses").innerHTML + springCourseFormatted;
+	//socket.emit('savedata', fallCourseData);
+	//socket.emit('savedata', springCourseData);
     console.log(fallCourses);
     console.log(springCourses);
 }
 
 document.getElementById("click").onclick = clickFunction;
 function clickFunction(){
-    for(let i = 0; i < courses.length; i++){
-        let link = `https://owaprod-pub.wesleyan.edu/reg/!wesmaps_page.html?stuid=&facid=NONE&crse_list=${courses[i]}&term=1209&offered=Y`
+	document.getElementById("courses").innerHTML = "";
+    for(let i = 0; i < 15; i++){
+        let link = `https://owaprod-pub.wesleyan.edu/reg/!wesmaps_page.html?stuid=&facid=NONE&crse_list=${document.getElementById("selectCourse").value}&term=${1069+10*i}&offered=Y`
         let data = {
-            url: link
+            url: link,
+			year: 2006 + i
         }
         socket.emit('button', data);
     }
