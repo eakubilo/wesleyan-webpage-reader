@@ -1,7 +1,7 @@
 let express = require('express');
 let fs = require('fs');
 let app = express();
-let port = port = process.env.PORT || 80;
+let port = process.env.PORT || 80;
 let server = app.listen(port);
 app.use(express.static('public'));
 
