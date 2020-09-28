@@ -78,10 +78,6 @@ for(let i = 0; i < courses.length; i++){
 }	
 let str;
 let parser = new DOMParser();
-let regexp = /[>][A-Z]{4}[0-9]{3}[-][0-1]{2}/gi
-let regexpThreeLetters = /[>][A-Z]{3}[0-9]{3}[-][0][1]/gi
-let regexpThreeLettersAmpersand = /[>][A-Z]{2}[&][A-Z][0-9]{3}[-][0][1]/gi
-let regexpThreeLettersAmpersandButStupid = /[>][A-Z][&][A-Z]{2}[0-9]{3}[-][0][1]/gi
 function printData(data){
 	if(socket.id == data.id){
 		    let springCourses = [];
